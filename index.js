@@ -1,4 +1,4 @@
-const port = 3000
+const port = 3001
 const express = require ('express')
 const app = express ()
 app.use (express.json())
@@ -35,11 +35,19 @@ const secondMiddleWare = (request, response, next) => {
 
 const newOrder = []
 app.post ('/order', secondMiddleWare, (request, response) => {
+    try{
     const { order, clientName, price} = request.body
+    if (price<40) throw new Error ("Only allowed prices over 40 dolars")
     //console.log (uuid)
     const costumer = {id: uuid.v4(), order, clientName, price, "status": "Em preparação"}
     newOrder.push (costumer)
     return response.status (201).json (costumer)
+} catch(err) {
+    return response.status (500).json ({error:err.message})
+} finally {
+    console.log ("Terminou tudo")
+}
+
 })
 
 app.get ('/order', secondMiddleWare, (request, response) => {
