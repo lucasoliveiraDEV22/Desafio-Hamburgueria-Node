@@ -1,8 +1,10 @@
+import cors from 'cors'
 const port = 3001
 const express = require ('express')
 const app = express ()
 app.use (express.json())
 const uuid = require ('uuid')
+app.use (cors())
 
 /*
 - Query Params => meusite.com/users?nome=rodolfo&age=28
